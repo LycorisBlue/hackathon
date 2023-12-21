@@ -1,0 +1,30 @@
+[
+    {
+      "id": 13,
+      "created_at": 1702161327420,
+      "phase": "poule",
+      "team1": "GHANA",
+      "team2": "CAMEROUN",
+      "score1": 2,
+      "score2": 1,
+      "days": 1707433201000,
+      "lieux": "San pedro",
+      "img1": "https://s-p5.com/medi/ansut/pictures/Ghana.png",
+      "img2": "https://s-p5.com/medi/ansut/pictures/Cameroun.jpeg",
+      "statuts": "à venir"
+    },
+    {
+      "id": 10,
+      "created_at": 1702157803974,
+      "phase": "poule",
+      "team1": "CIV",
+      "team2": "NIG",
+      "score1": 3,
+      "score2": 1,
+      "days": 1673821886000,
+      "lieux": "abidjan",
+      "img1": "https://s-p5.com/medi/ansut/pictures/ci.png",
+      "img2": "https://s-p5.com/medi/ansut/pictures/Nigeria.png",
+      "statuts": "à venir"
+    }
+  ]
