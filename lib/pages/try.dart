@@ -1,8 +1,7 @@
 import "package:flutter/material.dart";
 import "../models/country.dart";
-import "../models/matchs.dart";
 import "../widgets/country.dart";
-import "../widgets/meet.dart";
+// import "../widgets/meet.dart";
 
 class MyTabBar extends StatefulWidget {
   @override
@@ -55,7 +54,7 @@ class FirstTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListMatch(match: getFakeMatch()),
+      body: Text("data")
     );
   }
 }

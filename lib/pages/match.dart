@@ -1,7 +1,8 @@
 import "package:flutter/material.dart";
+import "package:hackathon/pages/card.dart";
 import 'package:hive/hive.dart';
 import "../models/country.dart";
-import "../models/matchs.dart";
+// import "../models/matchs.dart";
 import "../widgets/country.dart";
 import "../widgets/meet.dart";
 
@@ -62,7 +63,7 @@ class _MyTabBarState extends State<MyTabBar>
           children: [
             FirstTab(),
             SecondTab(),
-            ThirdTab(),
+            CustomIDCard(),
           ],
         ),
       ),
@@ -76,62 +77,111 @@ class FirstTab extends StatefulWidget {
 }
 
 class _FirstTabState extends State<FirstTab> {
-
   // Stockage Hive
-  final _box = Hive.box("pass"); 
+  final _box = Hive.box("pass");
 
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   String? _selectedRole;
 
   @override
-  Widget build(BuildContext context) {  
+  Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-          
-            TextFormField(
-              controller: _usernameController,
-              decoration: InputDecoration(labelText: "Nom d'utilisateur"),
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return 'Veuillez entrer un nom';
-                }
-                return null;
-              } 
-            ),
-            
-            DropdownButtonFormField(
-              value: _selectedRole,
-              items: [
-                DropdownMenuItem(child: Text("Admin"), value: "admin"), 
-                DropdownMenuItem(child: Text("User"), value: "user"),
-                DropdownMenuItem(child: Text("Guest"), value: "guest") 
-              ],
-              onChanged: (value) {
-                setState(() {
-                  _selectedRole = value; 
-                });
-              },
-              decoration: InputDecoration(labelText: "Rôle"),
-              validator: (value) {
-                if (value == null) {
-                  return 'Veuillez sélectionner un rôle';
-                } 
-                return null;  
-              },
-            ),
-            
-            ElevatedButton(
-              onPressed: _submitForm,
-              child: Text("S'enregistrer"), 
-            )
-          ],
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 150),
+              Text(
+                "Welcome back",
+                style: Theme.of(context).textTheme.headlineLarge,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                "Login to your account",
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              const SizedBox(height: 50),
+              TextFormField(
+                  controller: _usernameController,
+                  keyboardType: TextInputType.name,
+                  decoration: InputDecoration(
+                    labelText: "Nom & Pseudo",
+                    prefixIcon: const Icon(Icons.person_outline),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Veuillez entrer un nom';
+                    }
+                    return null;
+                  }),
+              const SizedBox(height: 10),
+              DropdownButtonFormField(
+                value: _selectedRole,
+                items: [
+                  DropdownMenuItem(child: Text("Admin"), value: "admin"),
+                  DropdownMenuItem(child: Text("User"), value: "user"),
+                  DropdownMenuItem(child: Text("Guest"), value: "guest")
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _selectedRole = value;
+                  });
+                },
+                decoration: InputDecoration(
+                  labelText: "Role",
+                  prefixIcon: const Icon(Icons.person_outline),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null) {
+                    return 'Veuillez sélectionner un rôle';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+                Column(
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      onPressed: _submitForm,
+                      child: const Text("Register"),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text("Already have an account?"),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text("Login"),
+                        ),
+                      ],
+                    ),
+            ],
+          ),
+            ],
         ),
+            ),
       ),
     );
   }
@@ -141,13 +191,12 @@ class _FirstTabState extends State<FirstTab> {
       // Enregistrement dans Hive
       _box.put("username", _usernameController.text);
       _box.put("role", _selectedRole);
-      
+
       // Redirection vers Tab 2
       TabController controller = _TabControllerProvider.of(context)!.controller;
       controller.animateTo(1);
-    } 
+    }
   }
-  
 }
 
 class SecondTab extends StatelessWidget {
