@@ -34,23 +34,39 @@ class FlagsGrid extends StatelessWidget {
   final List<Country> countries;
   final int crossAxisCount;
 
+  // Ajouter callback
+  final Function(String) onTap;
+
   const FlagsGrid({
-    Key? key,
+    Key? key, 
     required this.countries,
     this.crossAxisCount = 4,
+    // Ajouter callback
+    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(  
+
+    return GridView.count(
       padding: EdgeInsets.all(20),
       crossAxisCount: crossAxisCount,
       children: countries.map((country) {
-        return Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: FlagCircle(flag: country.flag), 
-        );  
+        
+        // Entourer de GestureDetector
+        return GestureDetector(
+          onTap: () {
+            // Appeler la callback
+            onTap(country.team); 
+          },
+          child: Padding(
+            padding: EdgeInsets.all(5.0),
+            child: FlagCircle(flag: country.flag),
+          ),
+        );
+
       }).toList(),
     );
   }
+
 }

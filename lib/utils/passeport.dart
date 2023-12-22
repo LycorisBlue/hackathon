@@ -1,6 +1,11 @@
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
-
-
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:share_plus/share_plus.dart';
 
 class WidgetCarte extends StatefulWidget {
   const WidgetCarte({super.key});
@@ -10,6 +15,12 @@ class WidgetCarte extends StatefulWidget {
 }
 
 class _WidgetCarteState extends State<WidgetCarte> {
+  final _screenshotController = ScreenshotController();
+
+  String name = "John Doe";
+  String jobTitle = "Software Engineer";
+
+  Uint8List? _imageBytes;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,105 +65,126 @@ class _WidgetCarteState extends State<WidgetCarte> {
                         Padding(
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
-                            child: Container(
-                              width: 318,
-                              height: 386,
-                              decoration: BoxDecoration(
-                                color: Colors.white60,
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: Image.network(
-                                    'https://s-p5.com/medi/ansut/pictures/Alg%C3%A9rie.png',
-                                  ).image,
+                            child: Screenshot(
+                              controller: _screenshotController,
+                              child: Container(
+                                width: 318,
+                                height: 386,
+                                decoration: BoxDecoration(
+                                  color: Colors.white60,
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: Image.network(
+                                      'https://s-p5.com/medi/ansut/pictures/Alg%C3%A9rie.png',
+                                    ).image,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 4,
+                                      color: Color(0x33000000),
+                                      offset: Offset(0, 2),
+                                      spreadRadius: 5,
+                                    )
+                                  ],
                                 ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 4,
-                                    color: Color(0x33000000),
-                                    offset: Offset(0, 2),
-                                    spreadRadius: 5,
-                                  )
-                                ],
-                              ),
-                              child: Stack(
-                                children: [
-                                  Container(
-                                    width: 324.0,
-                                    height: 390.0,
-                                    decoration: BoxDecoration(),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Stack(
-                                          children: [
-                                            Align(
-                                              alignment: AlignmentDirectional(
-                                                  0.0, -1.0),
-                                              child: Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        10.0, 30.0, 10.0, 0.0),
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Align(
-                                                      alignment:
-                                                          AlignmentDirectional(
-                                                              0.0, 0.0),
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    90.0,
-                                                                    42.0,
-                                                                    0.0,
-                                                                    0.0),
-                                                        child: ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      80.0),
-                                                          child: Image.network(
-                                                            "https://static.vecteezy.com/ti/vecteur-libre/t2/3793482-modele-de-grille-transparente-pour-vecteur-de-fond-vectoriel.jpg",
-                                                            width: 115.0,
-                                                            height: 115.0,
-                                                            fit: BoxFit.cover,
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      width: 324.0,
+                                      height: 390.0,
+                                      decoration: BoxDecoration(),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Stack(
+                                            children: [
+                                              Align(
+                                                alignment: AlignmentDirectional(
+                                                    0.0, -1.0),
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(10.0, 30.0,
+                                                          10.0, 0.0),
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Align(
+                                                        alignment:
+                                                            AlignmentDirectional(
+                                                                0.0, 0.0),
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      92.0,
+                                                                      40.0,
+                                                                      0.0,
+                                                                      0.0),
+                                                          child: ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        80.0),
+                                                            child: Image.memory(
+                                                              _imageBytes ??
+                                                                  Uint8List(0),
+                                                              width: 115,
+                                                              height: 115,
+                                                              fit: BoxFit.cover,
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 20.0, 0.0, 0.0),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        0.0, 10.0, 0.0, 0.0),
-                                                child: Container(
-                                                  width: 254.0,
-                                                  height: 28.0,
+                                            ],
+                                          ),
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 20.0, 0.0, 0.0),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 10.0, 0.0, 0.0),
+                                                  child: Container(
+                                                    width: 254.0,
+                                                    height: 28.0,
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.white),
+                                                    child: Text(
+                                                      "{name}",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.w900,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  width: 250.0,
+                                                  height: 32.0,
                                                   decoration: BoxDecoration(
                                                       color: Colors.white),
                                                   child: Text(
-                                                    "{name}",
+                                                    "{poste}",
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       fontSize: 18,
@@ -161,28 +193,14 @@ class _WidgetCarteState extends State<WidgetCarte> {
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                              Container(
-                                                width: 250.0,
-                                                height: 32.0,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.white),
-                                                child: Text(
-                                                  "{poste}",
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.w900,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             )),
                         Row(
@@ -195,7 +213,7 @@ class _WidgetCarteState extends State<WidgetCarte> {
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     15.0, 0.0, 16.0, 40.0),
                                 child: ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: _modalBottomSheetMenu,
                                   child: Text(
                                     'Inserer photo',
                                     style: TextStyle(
@@ -221,9 +239,9 @@ class _WidgetCarteState extends State<WidgetCarte> {
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     15.0, 0.0, 16.0, 40.0),
                                 child: ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: _shareScreenshot,
                                   child: Text(
-                                    'Upload',
+                                    'partager',
                                     style: TextStyle(
                                       fontFamily: 'Poppins',
                                       color: Colors.white,
@@ -253,5 +271,92 @@ class _WidgetCarteState extends State<WidgetCarte> {
         ),
       ),
     );
+  }
+
+  _imgFromCamera() async {
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+    );
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageBytes = File(pickedFile.path).readAsBytesSync();
+      });
+    }
+  }
+
+  _imgFromGallery() async {
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+    );
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageBytes = File(pickedFile.path).readAsBytesSync();
+      });
+    }
+  }
+
+  void _modalBottomSheetMenu() {
+    showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return Container(
+            height: 150.0,
+            color: Colors.transparent,
+            child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: const Radius.circular(10.0),
+                        topRight: const Radius.circular(10.0))),
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: Icon(Icons.camera_alt),
+                      title: Text('Camera'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        _imgFromCamera();
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.image),
+                      title: Text('Gallery'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        _imgFromGallery();
+                      },
+                    )
+                  ],
+                )),
+          );
+        });
+  }
+
+  _saveScreenshot() async {
+    final image = await _screenshotController.capture();
+    final directory = (await getApplicationDocumentsDirectory()).path;
+    File imgFile = File('$directory/id_card.png');
+    imgFile.writeAsBytesSync(image!);
+    // Code pour sauvegarder
+  }
+
+  _shareScreenshot() async {
+    final image = await _screenshotController.capture();
+    final directory = (await getApplicationDocumentsDirectory()).path;
+    File imgFile = File('$directory/id_card.png');
+    imgFile.writeAsBytesSync(image!);
+    await Share.shareFiles([imgFile.path]);
+
+    Fluttertoast.showToast(
+    msg: "Téléchargement réussi",
+    toastLength: Toast.LENGTH_SHORT,
+    gravity: ToastGravity.BOTTOM,
+    timeInSecForIosWeb: 1,
+    backgroundColor: Colors.green,
+    textColor: Colors.white,
+    fontSize: 16.0
+);
   }
 }

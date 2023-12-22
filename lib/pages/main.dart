@@ -64,7 +64,11 @@ class _MyTabBarState extends State<MyTabBar>
           controller: controller,
           children: [
             FirstTab(),
-            SecondTab(),
+            FlagsGrid(
+                countries: countries(),
+                onTap: (country) {
+                  print("Pays sélectionné: $country");
+                }),
             WidgetCarte(),
           ],
         ),
