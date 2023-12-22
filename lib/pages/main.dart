@@ -5,6 +5,8 @@ import "../models/country.dart";
 // import "../models/matchs.dart";
 import "../widgets/country.dart";
 import "../widgets/meet.dart";
+import "../utils/passeport.dart";
+
 
 class MyTabBar extends StatefulWidget {
   @override
@@ -63,7 +65,7 @@ class _MyTabBarState extends State<MyTabBar>
           children: [
             FirstTab(),
             SecondTab(),
-            CustomIDCard(),
+            WidgetCarte(),
           ],
         ),
       ),
