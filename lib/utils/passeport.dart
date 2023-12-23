@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:hackathon/functions/sam.dart';
+import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -15,10 +17,9 @@ class WidgetCarte extends StatefulWidget {
 }
 
 class _WidgetCarteState extends State<WidgetCarte> {
+  final _box = Hive.box("pass");
   final _screenshotController = ScreenshotController();
 
-  String name = "John Doe";
-  String jobTitle = "Software Engineer";
 
   Uint8List? _imageBytes;
   @override
@@ -75,7 +76,7 @@ class _WidgetCarteState extends State<WidgetCarte> {
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
                                     image: Image.network(
-                                      'https://s-p5.com/medi/ansut/pictures/Alg%C3%A9rie.png',
+                                      getFlag(_box.get("choice")),
                                     ).image,
                                   ),
                                   boxShadow: [
@@ -167,7 +168,7 @@ class _WidgetCarteState extends State<WidgetCarte> {
                                                     decoration: BoxDecoration(
                                                         color: Colors.white),
                                                     child: Text(
-                                                      "{name}",
+                                                      _box.get("username"),
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
@@ -184,7 +185,7 @@ class _WidgetCarteState extends State<WidgetCarte> {
                                                   decoration: BoxDecoration(
                                                       color: Colors.white),
                                                   child: Text(
-                                                    "{poste}",
+                                                    _box.get("role"),
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       fontSize: 18,

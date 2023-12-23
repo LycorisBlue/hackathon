@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:hackathon/pages/card.dart";
+import "package:hackathon/pages/form.dart";
 import 'package:hive/hive.dart';
 import "../models/country.dart";
 // import "../models/matchs.dart";
@@ -50,20 +51,21 @@ class _MyTabBarState extends State<MyTabBar>
             tabs: [
               Tab(
                 icon: Icon(Icons.schedule),
-                text: "Accueil",
+                text: "Etape 1",
               ),
               Tab(
                 icon: Icon(Icons.sports_score),
-                text: "Recherche",
+                text: "Etape 2",
               ),
-              Tab(icon: Icon(Icons.equalizer), text: "Paramètres")
+              Tab(icon: Icon(Icons.equalizer), text: "Etape 3")
             ],
           ),
         ),
         body: TabBarView(
           controller: controller,
           children: [
-            FirstTab(),
+            // FirstTab(),
+            FormApp(),
             FlagsGrid(
                 countries: countries(),
                 onTap: (country) {
@@ -237,4 +239,54 @@ class ThirdTab extends StatelessWidget {
       ),
     );
   }
+}
+
+
+class FlagsGrid extends StatelessWidget {
+  
+
+
+  final List<Country> countries;
+  final int crossAxisCount;
+
+  // Ajouter callback
+  final Function(String) onTap;
+
+  const FlagsGrid({
+    Key? key, 
+    required this.countries,
+    this.crossAxisCount = 4,
+    // Ajouter callback
+    required this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+final TabController controller =
+        _TabControllerProvider.of(context)!.controller;
+  final _box = Hive.box("pass");
+
+    return GridView.count(
+      padding: EdgeInsets.all(20),
+      crossAxisCount: crossAxisCount,
+      children: countries.map((country) {
+        
+        // Entourer de GestureDetector
+        return GestureDetector(
+          onTap: () {
+            // Appeler la callback
+            _box.put("choice", country.team);
+            onTap(_box.get("choice")); 
+            controller.animateTo(2);
+          },
+          child: Padding(
+            padding: EdgeInsets.all(5.0),
+            child: FlagCircle(flag: country.flag),
+          ),
+        );
+
+      }).toList(),
+    );
+  }
+
 }
